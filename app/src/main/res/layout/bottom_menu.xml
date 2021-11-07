@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/cornershape">
+    <TableRow
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="#ffbd96"
+        android:weightSum="4">
+        <ImageButton
+            android:id="@+id/btnOpen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_open"
+            android:layout_weight="1"/>
+        <ImageButton
+            android:id="@+id/btnInProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_in_progress"
+            android:layout_weight="1"/>
+        <ImageButton
+            android:id="@+id/btnTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_test"
+            android:layout_weight="1"/>
+        <ImageButton
+            android:id="@+id/btnDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_done"
+            android:layout_weight="1"/>
+
+    </TableRow>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
