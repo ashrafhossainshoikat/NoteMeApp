@@ -5,6 +5,149 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TaskManageActivity"
-    android:background="#fff7e6">
+    android:background="@color/app_background_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:orientation="vertical" >
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_add_task"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/black"
+                        android:background="@color/tv_bg_color"
+                        android:textStyle="bold"
+                        android:padding="10dp"
+                        android:textSize="25dp"
+                        android:fontFamily="sans-serif-condensed"/>
+
+                    <EditText
+                        android:id="@+id/etTaskName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:textColor="@color/black"
+                        android:background="@color/tv_bg_color"
+                        android:textStyle="bold"
+                        android:padding="10dp"
+                        android:textSize="30dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:inputType="textCapWords"
+                        android:textColorHint="@color/black"
+                        android:hint="@string/task_name"/>
+
+                    <EditText
+                        android:id="@+id/etDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_margin="3dp"
+                        android:textColor="@color/black"
+                        android:background="@color/tv_bg_color"
+                        android:textStyle="bold"
+                        android:padding="10dp"
+                        android:lines="4"
+                        android:fontFamily="sans-serif-condensed"
+                        android:inputType="textCapWords"
+                        android:hint="@string/description"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:weightSum="2.5"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/deadlines"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:padding="10dp"
+                            android:fontFamily="sans-serif-condensed"/>
+                        <TextView
+                            android:id="@+id/tvDeadLine"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:padding="10dp"
+                            android:fontFamily="sans-serif-condensed"/>
+
+                        <ImageButton
+                            android:id="@+id/btnDateSelect"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:padding="10dp"
+                            android:background="@drawable/ic_calender" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/status"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:padding="10dp"
+                            android:fontFamily="sans-serif-condensed"/>
+                        <Spinner
+                            android:id="@+id/spStatus"
+                            android:layout_width="150dp"
+                            android:layout_height="40dp"
+                            android:textColor="@color/fab_color"
+                            android:background="@drawable/spinner_bg"
+                            android:textStyle="bold"
+                            android:padding="10dp"
+                            android:fontFamily="sans-serif-condensed"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+                    <include layout="@layout/email_phone_url_layout" />
+                    <Button
+                        android:id="@+id/btnSubmit"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:background="@color/fab_color"
+                        android:textColor="@color/white"
+                        android:text="@string/submit"
+                        android:padding="10dp"
+                        android:layout_marginTop="20dp"
+                        android:textAllCaps="false"
+                        android:layout_gravity="center_horizontal" />
+
+
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

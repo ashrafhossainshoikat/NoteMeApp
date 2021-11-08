@@ -2,12 +2,11 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/cornershape">
+    android:layout_height="wrap_content">
     <TableRow
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:weightSum="4">
+        android:weightSum="3">
 
         <LinearLayout
             android:layout_height="match_parent"
@@ -15,21 +14,21 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageButton
-                android:id="@+id/btnOpen"
+                android:id="@+id/btnEmail"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:padding="5dp"
-                android:background="@drawable/ic_open"
+                android:background="@drawable/ic_email"
                 android:layout_gravity="center" />
             <TextView
-                android:id="@+id/tvOpen"
+                android:id="@+id/tvEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="1dp"
                 android:gravity="center"
-                android:text="@string/txt_open"
+                android:text="@string/txt_email"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
@@ -41,21 +40,21 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageButton
-                android:id="@+id/btnInProgress"
+                android:id="@+id/btnPhone"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:padding="5dp"
                 android:background="@drawable/ic_in_progress"
                 android:layout_gravity="center_horizontal" />
             <TextView
-                android:id="@+id/tvInProgress"
+                android:id="@+id/tvPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="1dp"
                 android:gravity="center"
-                android:text="@string/txt_in_progress"
+                android:text="@string/txt_phone"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
         </LinearLayout>
@@ -66,49 +65,26 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageButton
-                android:id="@+id/btnTest"
+                android:id="@+id/btnUrl"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:padding="5dp"
-                android:background="@drawable/ic_test"
+                android:background="@drawable/ic_url"
                 android:layout_gravity="center_horizontal" />
             <TextView
-                android:id="@+id/tvTest"
+                android:id="@+id/tvUrl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="1dp"
                 android:gravity="center"
-                android:text="@string/txt_test"
+                android:text="@string/txt_url"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <ImageButton
-                android:id="@+id/btnDone"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:padding="5dp"
-                android:background="@drawable/ic_done"
-                android:layout_gravity="center_horizontal" />
-            <TextView
-                android:id="@+id/tvDone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="1dp"
-                android:gravity="center"
-                android:text="@string/txt_done"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
-        </LinearLayout>
+
 
 
 

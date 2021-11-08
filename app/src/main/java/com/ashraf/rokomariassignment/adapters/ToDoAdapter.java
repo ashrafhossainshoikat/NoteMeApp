@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -24,11 +25,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     private List<ToDoModel> todoList;
     private DatabaseHandler db;
-    private HomeActivity activity;
+    private Context context;
 
-    public ToDoAdapter(DatabaseHandler db, HomeActivity activity) {
+    public ToDoAdapter(DatabaseHandler db, Context context) {
         this.db = db;
-        this.activity = activity;
+        this.context = context;
     }
 
     @NonNull
@@ -68,7 +69,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     }
 
     public Context getContext() {
-        return activity;
+        return context;
     }
 
     public void setTasks(List<ToDoModel> todoList) {
