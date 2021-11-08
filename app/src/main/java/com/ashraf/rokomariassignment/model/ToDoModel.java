@@ -3,7 +3,17 @@ package com.ashraf.rokomariassignment.model;
 public class ToDoModel {
 
     private int id;
-    private String taskName,description, deadline, status, createDate, email,url, phoneNo;
+    private String taskName;
+    private String description;
+    private String deadline;
+    private String status;
+    private String email;
+    private String url;
+    private String phoneNo;
+    private String createdOn;
+    private String updatedOn;
+
+
     public int getId() {
         return id;
     }
@@ -44,14 +54,6 @@ public class ToDoModel {
         this.status = status;
     }
 
-    public String getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -75,6 +77,23 @@ public class ToDoModel {
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
     }
+
+    public String getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public String getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(String updatedOn) {
+        this.updatedOn = updatedOn;
+    }
+
 
 
 

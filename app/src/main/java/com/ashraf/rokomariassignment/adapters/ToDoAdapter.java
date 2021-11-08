@@ -44,18 +44,18 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         db.openDatabase();
 
         final ToDoModel item = todoList.get(position);
-        holder.task.setText(item.getTask());
-        holder.task.setChecked(toBoolean(item.getStatus()));
-        holder.task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    db.updateStatus(item.getId(), 1);
-                } else {
-                    db.updateStatus(item.getId(), 0);
-                }
-            }
-        });
+        holder.task.setText(item.getTaskName());
+        //holder.task.setChecked(toBoolean(item.getStatus()));
+//        holder.task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                    db.updateStatus(item.getId(), 1);
+//                } else {
+//                    db.updateStatus(item.getId(), 0);
+//                }
+//            }
+//        });
     }
 
     private boolean toBoolean(int n) {
@@ -87,10 +87,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         ToDoModel item = todoList.get(position);
         Bundle bundle = new Bundle();
         bundle.putInt("id", item.getId());
-        bundle.putString("task", item.getTask());
-        AddNewTask fragment = new AddNewTask();
-        fragment.setArguments(bundle);
-        fragment.show(activity.getSupportFragmentManager(), AddNewTask.TAG);
+        bundle.putString("task", item.getTaskName());
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

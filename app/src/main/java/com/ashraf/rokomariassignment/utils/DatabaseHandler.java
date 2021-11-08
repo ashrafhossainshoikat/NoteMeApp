@@ -10,19 +10,40 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.ashraf.rokomariassignment.model.ToDoModel;
 
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final int VERSION = 1;
-    private static final String NAME = "toDoListDatabase";
-    private static final String TODO_TABLE = "todo";
+    private static final String NAME = "note_me_db";
+    private static final String NOTE_ME_TASK_TABLE = "note_me_task";
     private static final String ID = "id";
-    private static final String TASK = "task";
+    private static final String TASK_NAME = "task_name";
+    private static final String DESCRIPTION = "description";
+    private static final String DEADLINES = "deadlines";
     private static final String STATUS = "status";
-    private static final String CREATE_TODO_TABLE = "CREATE TABLE " + TODO_TABLE + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TASK + " TEXT, "
-            + STATUS + " INTEGER)";
+    private static final String EMAIL = "email";
+    private static final String PHONE = "phone";
+    private static final String URL = "url";
+    private static final String CREATED_ON = "created_on";
+    private static final String UPDATED_ON = "updated_on";
+
+
+
+    private static final String CREATE_TODO_TABLE = "CREATE TABLE " + NOTE_ME_TASK_TABLE + "("
+            + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + TASK_NAME + " TEXT, "
+            + DESCRIPTION + " TEXT, "
+            + DEADLINES + " TEXT, "
+            + STATUS + " TEXT, "
+            + EMAIL + " TEXT, "
+            + PHONE + " TEXT, "
+            + URL + " TEXT, "
+            + CREATED_ON + " TEXT, "
+            + UPDATED_ON + " TEXT)";
 
     private SQLiteDatabase db;
 
@@ -38,7 +59,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TODO_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + NOTE_ME_TASK_TABLE);
         // Create tables again
         onCreate(db);
     }
@@ -49,9 +70,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public void insertTask(ToDoModel task){
         ContentValues cv = new ContentValues();
-        cv.put(TASK, task.getTask());
-        cv.put(STATUS, 0);
-        db.insert(TODO_TABLE, null, cv);
+        cv.put(TASK_NAME, task.getTaskName());
+        cv.put(DESCRIPTION, task.getDescription());
+        cv.put(DEADLINES, task.getDeadline());
+        cv.put(STATUS, task.getStatus());
+        cv.put(EMAIL, task.getEmail());
+        cv.put(PHONE, task.getPhoneNo());
+        cv.put(URL, task.getUrl());
+        cv.put(CREATED_ON, Calendar.getInstance()+"");
+        db.insert(NOTE_ME_TASK_TABLE, null, cv);
     }
 
     @SuppressLint("Range")
@@ -60,14 +87,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cur = null;
         db.beginTransaction();
         try{
-            cur = db.query(TODO_TABLE, null, null, null, null, null, null, null);
+            cur = db.query(NOTE_ME_TASK_TABLE, null, null, null, null, null, null, null);
             if(cur != null){
                 if(cur.moveToFirst()){
                     do{
                         ToDoModel task = new ToDoModel();
                         task.setId(cur.getInt(cur.getColumnIndex(ID)));
-                        task.setTask(cur.getString(cur.getColumnIndex(TASK)));
-                        task.setStatus(cur.getInt(cur.getColumnIndex(STATUS)));
+                        task.setTaskName(cur.getString(cur.getColumnIndex(TASK_NAME)));
+                        task.setDescription(cur.getString(cur.getColumnIndex(DESCRIPTION)));
+                        task.setDeadline(cur.getString(cur.getColumnIndex(DEADLINES)));
+                        task.setStatus(cur.getString(cur.getColumnIndex(STATUS)));
+                        task.setEmail(cur.getString(cur.getColumnIndex(EMAIL)));
+                        task.setPhoneNo(cur.getString(cur.getColumnIndex(PHONE)));
+                        task.setUrl(cur.getString(cur.getColumnIndex(URL)));
+                        task.setCreatedOn(cur.getString(cur.getColumnIndex(CREATED_ON)));
                         taskList.add(task);
                     }
                     while(cur.moveToNext());
@@ -85,16 +118,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void updateStatus(int id, int status){
         ContentValues cv = new ContentValues();
         cv.put(STATUS, status);
-        db.update(TODO_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
+        db.update(NOTE_ME_TASK_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
     }
 
-    public void updateTask(int id, String task) {
+    public void updateTask(ToDoModel task) {
         ContentValues cv = new ContentValues();
-        cv.put(TASK, task);
-        db.update(TODO_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
+        cv.put(TASK_NAME, task.getTaskName());
+        cv.put(DESCRIPTION, task.getDescription());
+        cv.put(DEADLINES, task.getDeadline());
+        cv.put(STATUS, task.getStatus());
+        cv.put(EMAIL, task.getEmail());
+        cv.put(PHONE, task.getPhoneNo());
+        cv.put(URL, task.getUrl());
+        cv.put(UPDATED_ON, Calendar.getInstance()+"");
+        db.update(NOTE_ME_TASK_TABLE, cv, ID + "= ?", new String[] {String.valueOf(task.getId())});
     }
 
     public void deleteTask(int id){
-        db.delete(TODO_TABLE, ID + "= ?", new String[] {String.valueOf(id)});
+        db.delete(NOTE_ME_TASK_TABLE, ID + "= ?", new String[] {String.valueOf(id)});
     }
 }

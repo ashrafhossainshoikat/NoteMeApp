@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -18,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class HomeActivity extends AppCompatActivity implements DialogCloseListener{
+public class HomeActivity extends AppCompatActivity{
 
     private DatabaseHandler db;
 
@@ -42,9 +43,7 @@ public class HomeActivity extends AppCompatActivity implements DialogCloseListen
         tasksAdapter = new ToDoAdapter(db,HomeActivity.this);
         tasksRecyclerView.setAdapter(tasksAdapter);
 
-        ItemTouchHelper itemTouchHelper = new
-                ItemTouchHelper(new RecyclerItemTouchHelper(tasksAdapter));
-        itemTouchHelper.attachToRecyclerView(tasksRecyclerView);
+
 
         fab = findViewById(R.id.fab);
 
@@ -56,17 +55,13 @@ public class HomeActivity extends AppCompatActivity implements DialogCloseListen
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddNewTask.newInstance().show(getSupportFragmentManager(), AddNewTask.TAG);
+                Intent intent=new Intent(HomeActivity.this, TaskManageActivity.class);
+                startActivity(intent);
+
             }
         });
 
     }
 
-    @Override
-    public void handleDialogClose(DialogInterface dialog){
-        taskList = db.getAllTasks();
-        Collections.reverse(taskList);
-        tasksAdapter.setTasks(taskList);
-        tasksAdapter.notifyDataSetChanged();
-    }
+
 }
