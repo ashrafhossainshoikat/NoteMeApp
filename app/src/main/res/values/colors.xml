@@ -18,6 +18,13 @@
     <color name="fab_color">#ed6415</color>
     <color name="tv_bg_color">#ebebeb</color>
 
+    <color name="success_color">#94db60</color>
+    <color name="error_color">#924747</color>
+
+
+
+
+
 
 
 </resources>

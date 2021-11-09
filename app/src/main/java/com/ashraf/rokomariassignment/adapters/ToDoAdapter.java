@@ -1,14 +1,21 @@
 package com.ashraf.rokomariassignment.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,88 +23,116 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ashraf.rokomariassignment.AddNewTask;
 import com.ashraf.rokomariassignment.HomeActivity;
 import com.ashraf.rokomariassignment.R;
+import com.ashraf.rokomariassignment.TaskDetailsActivity;
+import com.ashraf.rokomariassignment.TaskManageActivity;
 import com.ashraf.rokomariassignment.model.ToDoModel;
+import com.ashraf.rokomariassignment.utils.Constants;
 import com.ashraf.rokomariassignment.utils.DatabaseHandler;
+import com.ashraf.rokomariassignment.utils.Utility;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
+public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.Viewholder> {
 
-    private List<ToDoModel> todoList;
-    private DatabaseHandler db;
     private Context context;
+    private ArrayList<ToDoModel> toDoModelArrayList;
+    private DatabaseHandler db;
 
-    public ToDoAdapter(DatabaseHandler db, Context context) {
-        this.db = db;
+
+    public ToDoAdapter(Context context, ArrayList<ToDoModel> toDoModelArrayList) {
         this.context = context;
+        this.toDoModelArrayList = toDoModelArrayList;
+        db = new DatabaseHandler(context);
+        db.openDatabase();
+
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.task_layout, parent, false);
-        return new ViewHolder(itemView);
+    public ToDoAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_layout, parent, false);
+        return new Viewholder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        db.openDatabase();
+    public void onBindViewHolder(@NonNull ToDoAdapter.Viewholder holder, int position) {
+        // to set data to textview and imageview of each card layout
+        ToDoModel toDoModel = toDoModelArrayList.get(position);
+        holder.tvTaskName.setText(": "+toDoModel.getTaskName());
+        holder.tvCreatedDate.setText(": "+ toDoModel.getCreatedOn());
+        holder.tvDeadLine.setText(": "+toDoModel.getDeadline());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, TaskDetailsActivity.class);
+                intent.putExtra("todoTask", toDoModel);
+                context.startActivity(intent);
+            }
+        });
+        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, TaskManageActivity.class);
+                intent.putExtra("isUpdate", true);
+                intent.putExtra("todoTask", toDoModel);
+                context.startActivity(intent);
 
-        final ToDoModel item = todoList.get(position);
-        holder.task.setText(item.getTaskName());
-        //holder.task.setChecked(toBoolean(item.getStatus()));
-//        holder.task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    db.updateStatus(item.getId(), 1);
-//                } else {
-//                    db.updateStatus(item.getId(), 0);
-//                }
-//            }
-//        });
-    }
+            }
+        });
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(db.deleteTask(toDoModel.getId())>0){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    View dialogView = LayoutInflater.from(context).inflate(R.layout.custom_dialog_view, null, false);
+                    TextView tv=(TextView)dialogView.findViewById(R.id.tvMsg);
+                    tv.setText("task Deleted successfully.");
+                    builder.setView(dialogView);
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                    Button btnOk=(Button) dialogView.findViewById(R.id.btnOk);
+                    btnOk.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alertDialog.dismiss();
+                            Intent intent = new Intent(context, HomeActivity.class);
+                            context.startActivity(intent);
 
-    private boolean toBoolean(int n) {
-        return n != 0;
+                        }
+                    });
+
+                }
+
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
-        return todoList.size();
+        return toDoModelArrayList.size();
     }
 
-    public Context getContext() {
-        return context;
-    }
 
-    public void setTasks(List<ToDoModel> todoList) {
-        this.todoList = todoList;
-        notifyDataSetChanged();
-    }
 
-    public void deleteItem(int position) {
-        ToDoModel item = todoList.get(position);
-        db.deleteTask(item.getId());
-        todoList.remove(position);
-        notifyItemRemoved(position);
-    }
 
-    public void editItem(int position) {
-        ToDoModel item = todoList.get(position);
-        Bundle bundle = new Bundle();
-        bundle.putInt("id", item.getId());
-        bundle.putString("task", item.getTaskName());
 
-    }
+    public class Viewholder extends RecyclerView.ViewHolder {
+        public ImageButton btnEdit, btnDelete;
+        public TextView tvTaskName, tvCreatedDate,tvDeadLine;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        CheckBox task;
+        public Viewholder(@NonNull View itemView) {
+            super(itemView);
+            tvTaskName = itemView.findViewById(R.id.tvTaskName);
+            tvCreatedDate = itemView.findViewById(R.id.tvCreatedDate);
+            tvDeadLine = itemView.findViewById(R.id.tvDeadLine);
 
-        ViewHolder(View view) {
-            super(view);
-            task = view.findViewById(R.id.todoCheckBox);
+            btnEdit=(ImageButton) itemView.findViewById(R.id.btnEdit);
+            btnDelete=(ImageButton) itemView.findViewById(R.id.btnDelete);
+
+
         }
     }
 }
+

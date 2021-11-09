@@ -1,6 +1,8 @@
 package com.ashraf.rokomariassignment.model;
 
-public class ToDoModel {
+import java.io.Serializable;
+
+public class ToDoModel implements Serializable {
 
     private int id;
     private String taskName;

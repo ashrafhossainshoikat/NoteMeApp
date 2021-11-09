@@ -1,5 +1,6 @@
 package com.ashraf.rokomariassignment.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,16 +18,18 @@ import com.ashraf.rokomariassignment.adapters.ToDoAdapter;
 import com.ashraf.rokomariassignment.model.ToDoModel;
 import com.ashraf.rokomariassignment.utils.DatabaseHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 
 public class TaskListFragment extends Fragment {
     private DatabaseHandler db;
-    private RecyclerView tasksRecyclerView;
-    private ToDoAdapter tasksAdapter;
-    private List<ToDoModel> taskList;
+     RecyclerView tasksRecyclerView;
+     ToDoAdapter tasksAdapter;
+    ArrayList<ToDoModel> taskList;
     String title;
+
 
     public TaskListFragment(String title) {
         this.title=title;
@@ -36,25 +39,19 @@ public class TaskListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new DatabaseHandler(getContext());
+        db.openDatabase();
+        taskList = db.getAllTasksByStatus(title);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView=inflater.inflate(R.layout.fragment_task_list, container, false);
-
-        db = new DatabaseHandler(getContext());
-        db.openDatabase();
-
         tasksRecyclerView = rootView.findViewById(R.id.tasksRecyclerView);
-        tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        tasksAdapter = new ToDoAdapter(db, getActivity());
+        tasksAdapter = new ToDoAdapter(getContext(),taskList);
         tasksRecyclerView.setAdapter(tasksAdapter);
-
-        taskList = db.getAllTasks();
-        Collections.reverse(taskList);
-
-        tasksAdapter.setTasks(taskList);
+        tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return rootView;
     }
 }

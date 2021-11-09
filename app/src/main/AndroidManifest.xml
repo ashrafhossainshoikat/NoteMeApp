@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RokomariAssignment">
         <activity
+            android:name=".TaskDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".TaskManageActivity"
             android:exported="false" />
         <activity

@@ -68,7 +68,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db = this.getWritableDatabase();
     }
 
-    public void insertTask(ToDoModel task){
+    public long insertTask(ToDoModel task){
         ContentValues cv = new ContentValues();
         cv.put(TASK_NAME, task.getTaskName());
         cv.put(DESCRIPTION, task.getDescription());
@@ -77,13 +77,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(EMAIL, task.getEmail());
         cv.put(PHONE, task.getPhoneNo());
         cv.put(URL, task.getUrl());
-        cv.put(CREATED_ON, Calendar.getInstance()+"");
-        db.insert(NOTE_ME_TASK_TABLE, null, cv);
+        cv.put(CREATED_ON, Utility.getDateFromMillisecond(Calendar.getInstance().getTimeInMillis(),Constants.ddIMMIyyyyHHmmss));
+        return db.insert(NOTE_ME_TASK_TABLE, null, cv);
     }
 
     @SuppressLint("Range")
-    public List<ToDoModel> getAllTasks(){
-        List<ToDoModel> taskList = new ArrayList<>();
+    public ArrayList<ToDoModel> getAllTasks(){
+        ArrayList<ToDoModel> taskList = new ArrayList<>();
         Cursor cur = null;
         db.beginTransaction();
         try{
@@ -115,13 +115,49 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return taskList;
     }
 
+    @SuppressLint("Range")
+    public ArrayList<ToDoModel> getAllTasksByStatus(String status){
+        ArrayList<ToDoModel> taskList = new ArrayList<>();
+        Cursor cur = null;
+        db.beginTransaction();
+        try{
+            cur = db.query(NOTE_ME_TASK_TABLE, null, "status= ?", new String[] {status }, null, null, null, null);
+            if(cur != null){
+                if(cur.moveToFirst()){
+                    do{
+                        ToDoModel task = new ToDoModel();
+                        task.setId(cur.getInt(cur.getColumnIndex(ID)));
+                        task.setTaskName(cur.getString(cur.getColumnIndex(TASK_NAME)));
+                        task.setDescription(cur.getString(cur.getColumnIndex(DESCRIPTION)));
+                        task.setDeadline(cur.getString(cur.getColumnIndex(DEADLINES)));
+                        task.setStatus(cur.getString(cur.getColumnIndex(STATUS)));
+                        task.setEmail(cur.getString(cur.getColumnIndex(EMAIL)));
+                        task.setPhoneNo(cur.getString(cur.getColumnIndex(PHONE)));
+                        task.setUrl(cur.getString(cur.getColumnIndex(URL)));
+                        task.setCreatedOn(cur.getString(cur.getColumnIndex(CREATED_ON)));
+                        taskList.add(task);
+                    }
+                    while(cur.moveToNext());
+                }
+            }
+        }
+        finally {
+            db.endTransaction();
+            assert cur != null;
+            cur.close();
+        }
+        return taskList;
+    }
+
+
+
     public void updateStatus(int id, int status){
         ContentValues cv = new ContentValues();
         cv.put(STATUS, status);
         db.update(NOTE_ME_TASK_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
     }
 
-    public void updateTask(ToDoModel task) {
+    public long updateTask(ToDoModel task) {
         ContentValues cv = new ContentValues();
         cv.put(TASK_NAME, task.getTaskName());
         cv.put(DESCRIPTION, task.getDescription());
@@ -130,11 +166,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(EMAIL, task.getEmail());
         cv.put(PHONE, task.getPhoneNo());
         cv.put(URL, task.getUrl());
-        cv.put(UPDATED_ON, Calendar.getInstance()+"");
-        db.update(NOTE_ME_TASK_TABLE, cv, ID + "= ?", new String[] {String.valueOf(task.getId())});
+        cv.put(UPDATED_ON, Utility.getDateFromMillisecond(Calendar.getInstance().getTimeInMillis(),Constants.ddIMMIyyyyHHmmss));
+        return db.update(NOTE_ME_TASK_TABLE, cv, ID + "= ?", new String[] {String.valueOf(task.getId())});
     }
 
-    public void deleteTask(int id){
-        db.delete(NOTE_ME_TASK_TABLE, ID + "= ?", new String[] {String.valueOf(id)});
+    public long deleteTask(int id){
+       return db.delete(NOTE_ME_TASK_TABLE, ID + "= ?", new String[] {String.valueOf(id)});
     }
 }
