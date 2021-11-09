@@ -32,7 +32,7 @@ public class TaskManageActivity extends AppCompatActivity implements View.OnClic
 
     private DatabaseHandler db;
     private EditText etTaskName, etDescription;
-    private TextView tvDeadLine;
+    private TextView tvDeadLine,tvTitle;
     private Spinner spStatus;
     private Button btnSubmit;
     private ImageButton btnDateSelect;
@@ -51,6 +51,7 @@ public class TaskManageActivity extends AppCompatActivity implements View.OnClic
     }
 
     void initializeUIelements() {
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
         etTaskName = (EditText) findViewById(R.id.etTaskName);
         etDescription = (EditText) findViewById(R.id.etDescription);
         tvDeadLine = (TextView) findViewById(R.id.tvDeadLine);
@@ -84,6 +85,7 @@ public class TaskManageActivity extends AppCompatActivity implements View.OnClic
         }
 
         if(isUpdate){
+            tvTitle.setText(this.getString(R.string.title_edit_task));
             etTaskName.setText(toDoModel.getTaskName());
             etDescription.setText(toDoModel.getDescription());
             spStatus.setSelection(((ArrayAdapter<String>)spStatus.getAdapter()).getPosition(toDoModel.getStatus()));
@@ -114,7 +116,7 @@ public class TaskManageActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.btnSubmit:
                 if(getInputData(true)){
-                    saveOrUpdateToDoTask(toDoModel,true);
+                    saveOrUpdateToDoTask(toDoModel,isUpdate);
                 }
                 break;
             default:
@@ -155,25 +157,18 @@ public class TaskManageActivity extends AppCompatActivity implements View.OnClic
     void saveOrUpdateToDoTask(ToDoModel toDoModel, boolean isUpdate){
         db = new DatabaseHandler(this);
         db.openDatabase();
-        if(db.insertTask(toDoModel)>0){
-            AlertDialog.Builder builder = new AlertDialog.Builder(TaskManageActivity.this);
-            ViewGroup viewGroup = findViewById(android.R.id.content);
-            View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_dialog_view, viewGroup, false);
-            builder.setView(dialogView);
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-            Button btnOk=(Button) dialogView.findViewById(R.id.btnOk);
-            btnOk.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialog.dismiss();
-                    Intent intent=new Intent(TaskManageActivity.this,HomeActivity.class);
-                    startActivity(intent);
 
-                }
-            });
+        if(isUpdate){
+            if(db.updateTask(toDoModel)>0){
+                showAlertDialog(this.getString(R.string.msg_update));
+            }
 
+        }else {
+            if(db.insertTask(toDoModel)>0){
+                showAlertDialog(this.getString(R.string.msg_success));
+            }
         }
+
 
     };
 
@@ -193,6 +188,27 @@ public class TaskManageActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    void showAlertDialog(String msg){
+        AlertDialog.Builder builder = new AlertDialog.Builder(TaskManageActivity.this);
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_dialog_view, viewGroup, false);
+        TextView tv=(TextView)dialogView.findViewById(R.id.tvMsg);
+        tv.setText(msg);
+        builder.setView(dialogView);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        Button btnOk=(Button) dialogView.findViewById(R.id.btnOk);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                Intent intent=new Intent(TaskManageActivity.this,HomeActivity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
 }

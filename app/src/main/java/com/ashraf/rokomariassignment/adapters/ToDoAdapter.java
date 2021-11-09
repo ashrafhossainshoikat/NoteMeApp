@@ -2,47 +2,39 @@ package com.ashraf.rokomariassignment.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.ashraf.rokomariassignment.AddNewTask;
 import com.ashraf.rokomariassignment.HomeActivity;
 import com.ashraf.rokomariassignment.R;
 import com.ashraf.rokomariassignment.TaskDetailsActivity;
 import com.ashraf.rokomariassignment.TaskManageActivity;
 import com.ashraf.rokomariassignment.model.ToDoModel;
-import com.ashraf.rokomariassignment.utils.Constants;
 import com.ashraf.rokomariassignment.utils.DatabaseHandler;
-import com.ashraf.rokomariassignment.utils.Utility;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.Viewholder> {
 
     private Context context;
-    private ArrayList<ToDoModel> toDoModelArrayList;
+    private ArrayList<ToDoModel> toDoModelArrayList=null;
     private DatabaseHandler db;
+    String status="";
 
 
-    public ToDoAdapter(Context context, ArrayList<ToDoModel> toDoModelArrayList) {
+    public ToDoAdapter(Context context, ArrayList<ToDoModel> toDoModelArrayList,String status) {
         this.context = context;
         this.toDoModelArrayList = toDoModelArrayList;
+        this.status=status;
         db = new DatabaseHandler(context);
         db.openDatabase();
 
@@ -87,7 +79,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.Viewholder> {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     View dialogView = LayoutInflater.from(context).inflate(R.layout.custom_dialog_view, null, false);
                     TextView tv=(TextView)dialogView.findViewById(R.id.tvMsg);
-                    tv.setText("task Deleted successfully.");
+                    tv.setText(context.getString(R.string.msg_delete));
                     builder.setView(dialogView);
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();

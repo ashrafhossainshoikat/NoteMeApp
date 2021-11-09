@@ -27,7 +27,7 @@ public class TaskListFragment extends Fragment {
     private DatabaseHandler db;
      RecyclerView tasksRecyclerView;
      ToDoAdapter tasksAdapter;
-    ArrayList<ToDoModel> taskList;
+
     String title;
 
 
@@ -39,9 +39,6 @@ public class TaskListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new DatabaseHandler(getContext());
-        db.openDatabase();
-        taskList = db.getAllTasksByStatus(title);
     }
 
     @Override
@@ -49,9 +46,14 @@ public class TaskListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView=inflater.inflate(R.layout.fragment_task_list, container, false);
         tasksRecyclerView = rootView.findViewById(R.id.tasksRecyclerView);
-        tasksAdapter = new ToDoAdapter(getContext(),taskList);
+        db = new DatabaseHandler(getContext());
+        db.openDatabase();
+        ArrayList<ToDoModel> taskList=new ArrayList<>();
+        taskList = db.getAllTasksByStatus(title);
+        tasksAdapter = new ToDoAdapter(getContext(),taskList,title);
         tasksRecyclerView.setAdapter(tasksAdapter);
         tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        db.close();
         return rootView;
     }
 }

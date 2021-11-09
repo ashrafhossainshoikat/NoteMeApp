@@ -6,8 +6,11 @@
 
     <string name="submit">Submit</string>
     <string name="title_add_task">Add Tasks</string>
+    <string name="title_edit_task">Edit Tasks</string>
+    <string name="title_task_details">Task Details</string>
     <string name="task_name">Task Name</string>
     <string name="description">Write Description ........</string>
+    <string name="txt_description">Description: </string>
     <string name="deadlines">Deadlines: </string>
     <string name="status">Status</string>
     <string name="created_date">Crated Date:</string>
@@ -23,5 +26,7 @@
     <string name="txt_url">Url</string>
 
     <string name="msg_success">Task Saved Sucessfully</string>
+    <string name="msg_delete">Task Deleted successfully.</string>
+    <string name="msg_update">Task Updated successfully.</string>
 
 </resources>

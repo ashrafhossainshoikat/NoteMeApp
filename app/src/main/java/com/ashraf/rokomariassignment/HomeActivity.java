@@ -63,12 +63,33 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tvTest=(TextView)findViewById(R.id.tvTest);
         tvDone=(TextView)findViewById(R.id.tvDone);
 
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageSelected(int position) {
+                currentViewIndex = position;
+                selectCurrentTab(currentViewIndex);
+            }
+
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+            }
+        });
+
         initializePagerAdapter();
 
         if(addNewFragment) {
-            callFragments(Constants.STATUS_OPEN);
+            FragmentManager fragmentManager = this.getSupportFragmentManager();
+            TaskListFragment taskListFragment = new TaskListFragment(Constants.STATUS_OPEN);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.viewpager, taskListFragment, "Fragment Instance State");
+            fragmentTransaction.commit();
+            selectCurrentTab(0);
         }
-        selectCurrentTab(Constants.STATUS_OPEN);
 
     }
 
@@ -83,27 +104,27 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         pager.setAdapter(pageAdapter);
     }
 
-    private void selectCurrentTab(String status)
+    private void selectCurrentTab(int currentIndex)
     {
-        if(status.equals(Constants.STATUS_OPEN)){
+        if(currentIndex==0){
             tvOpen.setTextColor(Color.WHITE);
             tvInProgress.setTextColor(Color.BLACK);
             tvTest.setTextColor(Color.BLACK);
             tvDone.setTextColor(Color.BLACK);
         }
-        else if (status.equals(Constants.STATUS_IN_PROGRESS)){
+        else if (currentIndex==1){
             tvOpen.setTextColor(Color.BLACK);
             tvInProgress.setTextColor(Color.WHITE);
             tvTest.setTextColor(Color.BLACK);
             tvDone.setTextColor(Color.BLACK);
         }
-        else if (status.equals(Constants.STATUS_TEST)){
+        else if (currentIndex==2){
             tvOpen.setTextColor(Color.BLACK);
             tvInProgress.setTextColor(Color.BLACK);
             tvTest.setTextColor(Color.WHITE);
             tvDone.setTextColor(Color.BLACK);
         }
-        else if (status.equals(Constants.STATUS_DONE)){
+        else if (currentIndex==3){
             tvOpen.setTextColor(Color.BLACK);
             tvInProgress.setTextColor(Color.BLACK);
             tvTest.setTextColor(Color.BLACK);
@@ -113,40 +134,31 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    void callFragments(String status){
-        FragmentManager fragmentManager = this.getSupportFragmentManager();
-        TaskListFragment taskListFragment = new TaskListFragment(status);
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.viewpager, taskListFragment, "Fragment Instance State");
-        fragmentTransaction.commit();
-    }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnOpen:
-                currentViewIndex = 0;
-                pager.setCurrentItem(1,true);
-                selectCurrentTab(Constants.STATUS_OPEN);
-                callFragments(Constants.STATUS_OPEN);
+                currentViewIndex=0;
+                pager.setCurrentItem(currentViewIndex,true);
+                selectCurrentTab(currentViewIndex);
+
                 break;
             case R.id.btnInProgress:
                 currentViewIndex = 1;
-                pager.setCurrentItem(1,true);
-                selectCurrentTab(Constants.STATUS_IN_PROGRESS);
-                callFragments(Constants.STATUS_IN_PROGRESS);
+                pager.setCurrentItem(currentViewIndex,true);
+                selectCurrentTab(currentViewIndex);
                 break;
             case R.id.btnTest:
                 currentViewIndex = 2;
-                pager.setCurrentItem(1,true);
-                selectCurrentTab(Constants.STATUS_TEST);
-                callFragments(Constants.STATUS_TEST);
+                pager.setCurrentItem(currentViewIndex,true);
+                selectCurrentTab(currentViewIndex);
                 break;
             case R.id.btnDone:
                 currentViewIndex = 3;
-                pager.setCurrentItem(1,true);
-                selectCurrentTab(Constants.STATUS_DONE);
-                callFragments(Constants.STATUS_DONE);
+                pager.setCurrentItem(currentViewIndex,true);
+                selectCurrentTab(currentViewIndex);
                 break;
             case R.id.fab:
                 Intent intent=new Intent(HomeActivity.this, TaskManageActivity.class);

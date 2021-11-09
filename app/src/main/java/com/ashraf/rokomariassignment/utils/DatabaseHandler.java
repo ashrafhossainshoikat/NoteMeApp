@@ -121,7 +121,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cur = null;
         db.beginTransaction();
         try{
-            cur = db.query(NOTE_ME_TASK_TABLE, null, "status= ?", new String[] {status }, null, null, null, null);
+            String sql=" SELECT * FROM note_me_task WHERE status= '"+status+"' ";
+            cur = db.rawQuery(sql,null);
             if(cur != null){
                 if(cur.moveToFirst()){
                     do{
