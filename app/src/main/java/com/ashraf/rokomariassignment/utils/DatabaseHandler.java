@@ -77,7 +77,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(EMAIL, task.getEmail());
         cv.put(PHONE, task.getPhoneNo());
         cv.put(URL, task.getUrl());
-        cv.put(CREATED_ON, Utility.getDateFromMillisecond(Calendar.getInstance().getTimeInMillis(),Constants.ddIMMIyyyyHHmmss));
+        cv.put(CREATED_ON, Utility.getDateFromMillisecond(Calendar.getInstance().getTimeInMillis(),Constants.DATE_FORMAT_DD_MM_YYYY));
         return db.insert(NOTE_ME_TASK_TABLE, null, cv);
     }
 

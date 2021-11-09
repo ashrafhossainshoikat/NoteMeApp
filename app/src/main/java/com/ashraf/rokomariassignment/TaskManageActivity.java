@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.ashraf.rokomariassignment.model.ToDoModel;
 import com.ashraf.rokomariassignment.utils.Constants;
 import com.ashraf.rokomariassignment.utils.DatabaseHandler;
 import com.ashraf.rokomariassignment.utils.Utility;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,7 +37,7 @@ public class TaskManageActivity extends AppCompatActivity implements View.OnClic
     private TextView tvDeadLine,tvTitle;
     private Spinner spStatus;
     private Button btnSubmit;
-    private ImageButton btnDateSelect;
+    private ImageButton btnDateSelect, btnEmail, btnPhone, btnUrl;
     ToDoModel toDoModel=new ToDoModel();
     boolean isUpdate=false;
 
@@ -72,6 +74,16 @@ public class TaskManageActivity extends AppCompatActivity implements View.OnClic
 
         btnDateSelect = (ImageButton) findViewById(R.id.btnDateSelect);
         btnDateSelect.setOnClickListener(this);
+
+        btnEmail = (ImageButton) findViewById(R.id.btnEmail);
+        btnEmail.setOnClickListener(this);
+
+        btnPhone = (ImageButton) findViewById(R.id.btnPhone);
+        btnPhone.setOnClickListener(this);
+
+        btnUrl = (ImageButton) findViewById(R.id.btnUrl);
+        btnUrl.setOnClickListener(this);
+
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(this);
 
@@ -113,6 +125,16 @@ public class TaskManageActivity extends AppCompatActivity implements View.OnClic
                         .get(Calendar.DAY_OF_MONTH));
 
                 dpd.show();
+                break;
+            case R.id.btnEmail:
+                showInputFieldDialog(Constants.EMAIL);
+                break;
+
+            case R.id.btnPhone:
+                showInputFieldDialog(Constants.PHONE);
+                break;
+            case R.id.btnUrl:
+                showInputFieldDialog(Constants.URL);
                 break;
             case R.id.btnSubmit:
                 if(getInputData(true)){
@@ -206,6 +228,79 @@ public class TaskManageActivity extends AppCompatActivity implements View.OnClic
                 alertDialog.dismiss();
                 Intent intent=new Intent(TaskManageActivity.this,HomeActivity.class);
                 startActivity(intent);
+
+            }
+        });
+    }
+
+    void showInputFieldDialog(String type){
+        AlertDialog.Builder builder = new AlertDialog.Builder(TaskManageActivity.this);
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_input_dialog, viewGroup, false);
+        ImageView ivType=(ImageView) dialogView.findViewById(R.id.ivType);
+        EditText etFieldType=(EditText) dialogView.findViewById(R.id.etFieldType);
+        Button btnSave=(Button) dialogView.findViewById(R.id.btnSave);
+        if(type.equals(Constants.EMAIL)){
+//            Glide.with(this)
+//                    .load(this.getResources().getIdentifier("ic_email", "drawable", this.getPackageName()))
+//                    .into(ivType);
+            ivType.setBackground(getDrawable(R.drawable.ic_email));
+            etFieldType.setHint(getString(R.string.enter_email));
+            btnSave.setText(getString(R.string.save_email));
+            if(toDoModel.getEmail()!=null && !toDoModel.getEmail().equals("")){
+                etFieldType.setText(toDoModel.getEmail());
+            }
+
+        }
+        else if(type.equals(Constants.PHONE)){
+//            Glide.with(this)
+//                    .load(this.getResources().getIdentifier("ic_phone", "drawable", this.getPackageName()))
+//                    .into(ivType);
+            ivType.setBackground(getDrawable(R.drawable.ic_phone));
+            etFieldType.setHint(getString(R.string.enter_phone));
+            btnSave.setText(getString(R.string.save_phone));
+            if(toDoModel.getPhoneNo()!=null && !toDoModel.getPhoneNo().equals("")){
+                etFieldType.setText(toDoModel.getPhoneNo());
+            }
+        }
+        else if(type.equals(Constants.URL)){
+//            Glide.with(this)
+//                    .load(this.getResources().getIdentifier("ic_url", "drawable", this.getPackageName()))
+//                    .into(ivType);
+            ivType.setBackground(getDrawable(R.drawable.ic_url));
+            etFieldType.setHint(getString(R.string.enter_url));
+            btnSave.setText(getString(R.string.save_url));
+            if(toDoModel.getUrl()!=null && !toDoModel.getUrl().equals("")){
+                etFieldType.setText(toDoModel.getUrl());
+            }
+        }
+
+
+
+        builder.setView(dialogView);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(etFieldType.getText()!=null && !etFieldType.getText().toString().equals("")){
+                    if(type.equals(Constants.EMAIL)){
+                        toDoModel.setEmail(etFieldType.getText().toString());
+                    }
+                    else if(type.equals(Constants.PHONE)){
+                        toDoModel.setPhoneNo(etFieldType.getText().toString());
+                    }
+                    else if(type.equals(Constants.URL)){
+                        toDoModel.setUrl(etFieldType.getText().toString());
+                    }
+
+                }
+
+
+                alertDialog.dismiss();
+
 
             }
         });

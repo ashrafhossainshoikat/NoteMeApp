@@ -21,6 +21,10 @@
     <string name="txt_test">Test</string>
     <string name="txt_done">Done</string>
 
+    <string name="txt_ok">Ok</string>
+
+
+
     <string name="txt_email">Email</string>
     <string name="txt_phone">Phone</string>
     <string name="txt_url">Url</string>
@@ -28,5 +32,13 @@
     <string name="msg_success">Task Saved Sucessfully</string>
     <string name="msg_delete">Task Deleted successfully.</string>
     <string name="msg_update">Task Updated successfully.</string>
+
+    <string name="enter_email">Enter E-mail</string>
+    <string name="enter_phone">Enter Phone</string>
+    <string name="enter_url">Enter Url</string>
+
+    <string name="save_email">Save E-mail</string>
+    <string name="save_phone">Save Phone</string>
+    <string name="save_url">Save Url</string>
 
 </resources>

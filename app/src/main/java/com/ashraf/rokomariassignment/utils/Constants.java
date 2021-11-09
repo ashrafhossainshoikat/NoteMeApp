@@ -12,4 +12,9 @@ public class Constants {
 
     public static SimpleDateFormat DATE_FORMAT_DD_MM_YYYY= new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
     public static SimpleDateFormat ddIMMIyyyyHHmmss = new SimpleDateFormat ("dd-MM-yyyy HH:mm:ss");
+
+
+    public static final String EMAIL="Email" ;
+    public static final String PHONE="Phone" ;
+    public static final String URL="Url" ;
 }
